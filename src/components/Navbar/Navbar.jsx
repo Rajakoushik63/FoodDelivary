@@ -2,11 +2,25 @@
 import PropTypes from "prop-types";
 import "./Navbar.css";
 import { assets } from "../../assets/assets";
-import { useState } from "react";
+import { useContext, useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { StoreContext } from "../context/StoreContext";
 
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
+  const storeContext = useContext(StoreContext);
+
+  // Memoize the getTotalAmount function
+  const getTotalAmount = useMemo(
+    () => storeContext?.getTotalCartAmount || (() => 0),
+    [storeContext]
+  );
+
+  useEffect(() => {
+    // console.log("Total Cart Amount:", getTotalAmount());
+    // console.log("Dot Class Applied:", getTotalAmount() === 0 ? "" : "dot");
+  }, [getTotalAmount]);
+
   return (
     <div className="navbar">
       <Link to="/">
@@ -48,7 +62,7 @@ const Navbar = ({ setShowLogin }) => {
           <Link to="/cart">
             <img src={assets.basket_icon} alt="" />
           </Link>
-          <div className="dot"></div>
+          <div className={getTotalAmount() === 0 ? "" : "dot"}></div>
         </div>
         <button onClick={() => setShowLogin(true)}>Sign in</button>
       </div>
