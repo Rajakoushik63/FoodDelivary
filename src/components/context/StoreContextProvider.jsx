@@ -6,8 +6,9 @@ import { StoreContext } from "./StoreContext";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const url = "http://localhost:4000";
+
 const StoreContextProvider = (props) => {
-  const url = "http://localhost:4000";
   const [food_list, setFoodList] = useState([]);
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState("");
@@ -29,7 +30,7 @@ const StoreContextProvider = (props) => {
         );
       }
     } catch (err) {
-      toast.error("Error adding item to cart!", err);
+      toast.error("Error adding item to cart!", err.message);
     }
   };
 
@@ -44,7 +45,7 @@ const StoreContextProvider = (props) => {
         );
       }
     } catch (error) {
-      toast.error("Error removing item from cart!", error);
+      toast.error("Error removing item from cart!", error.message);
     }
   };
 
@@ -57,7 +58,7 @@ const StoreContextProvider = (props) => {
           totalAmount += itemInfo.price * cartItems[item];
         }
       } catch (error) {
-        toast.error("Error calculating total amount!", error);
+        toast.error("Error calculating total amount!", error.message);
       }
     }
     return totalAmount;
@@ -68,7 +69,7 @@ const StoreContextProvider = (props) => {
       const response = await axios.get(url + "/api/food/list");
       setFoodList(response.data.data);
     } catch (error) {
-      toast.error("Error fetching food list!", error);
+      toast.error("Error fetching food list!", error.message);
     }
   };
 
@@ -81,7 +82,7 @@ const StoreContextProvider = (props) => {
       );
       setCartItems(response.data.cartData);
     } catch (error) {
-      toast.error("Error loading cart data!", error);
+      toast.error("Error loading cart data!", error.message);
     }
   };
 
